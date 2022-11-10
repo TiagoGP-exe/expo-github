@@ -1,4 +1,11 @@
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  Pressable,
+} from "react-native";
 import { LanguageUsage } from "../LanguageUsage";
 import { StarButton } from "../StarButton";
 import { StarCount } from "../StarCount";
@@ -10,12 +17,13 @@ export interface IRepoCard {
   language?: string;
   stars: number;
   avatar?: string;
-  url?: string;
+  url: string;
   disableButton?: boolean;
 }
 
 export interface CardRepoProps extends IRepoCard {
   onPress?: (id: number) => void;
+  goToRepo?: (data: IRepoCard) => void;
 }
 
 const { width } = Dimensions.get("window");
@@ -30,6 +38,7 @@ export function CardRepo({
   url,
   onPress,
   disableButton,
+  goToRepo,
 }: CardRepoProps) {
   const [firstText, secondText] = name.split("/");
 
@@ -37,8 +46,13 @@ export function CardRepo({
     onPress && onPress(id);
   };
 
+  const handleGoToRepo = async () => {
+    goToRepo &&
+      goToRepo({ id, name, description, stars, avatar, language, url });
+  };
+
   return (
-    <View style={styles.cardContainer}>
+    <Pressable onPress={handleGoToRepo} style={styles.cardContainer}>
       <View style={styles.cardHeader}>
         <Text>
           {firstText}/<Text style={styles.cardHeaderText}>{secondText}</Text>
@@ -59,7 +73,7 @@ export function CardRepo({
         <StarCount count={stars ?? 0} />
         <LanguageUsage language={language ?? "desconhecido"} />
       </View>
-    </View>
+    </Pressable>
   );
 }
 

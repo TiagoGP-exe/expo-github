@@ -1,16 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FC } from "react";
+import { TouchableOpacity } from "react-native";
 import { GithubUserForm } from "../components/GithubUserForm";
 import { useBottomSheet } from "../hooks/useBottomSheet";
+import { AllRespositories } from "../screens/AllRespositories";
 import FavoritesRepositories from "../screens/FavoritesRepositories";
-import { HomeScreen } from "../screens/HomeScreen";
-import { TouchableOpacity } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-export function StackRoutes() {
+export const StackRoutes: FC = () => {
   const { exposeBottomSheet } = useBottomSheet();
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -27,25 +27,26 @@ export function StackRoutes() {
             />
           </TouchableOpacity>
         ),
-
         tabBarLabelStyle: {
           fontSize: 16,
         },
+        lazy: true,
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="AllRespositories"
         options={{
           title: "Repositórios",
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="logo-github" size={size} color={color} />
           ),
         }}
-        component={HomeScreen}
+        component={AllRespositories}
       />
       <Tab.Screen
-        name="Favoritos"
+        name="FavoritesRepositories"
         options={{
+          title: "Favoritos",
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="star" size={size} color={color} />
           ),
@@ -54,4 +55,4 @@ export function StackRoutes() {
       />
     </Tab.Navigator>
   );
-}
+};

@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
-import { styles } from "./styles";
+import { Text, View, StyleSheet } from "react-native";
 
 interface StarCountProps {
   count: number;
@@ -14,3 +13,15 @@ export function StarCount({ count }: StarCountProps) {
     </View>
   );
 }
+
+export const styles = StyleSheet.create({
+  starCountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textContent: {
+    color: "#9A9A9A",
+    fontSize: 12,
+    marginLeft: 4,
+  },
+});

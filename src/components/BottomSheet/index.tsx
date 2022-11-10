@@ -1,10 +1,12 @@
-import React, { ReactNode, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React, { ReactNode, useMemo, useState } from "react";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+} from "react-native-reanimated";
 
 interface BottomSheetComponentProps {
   isOpen: boolean;
@@ -18,16 +20,37 @@ export function BottomSheetComponent({
   children,
 }: BottomSheetComponentProps) {
   const [isClosing, setIsClosing] = useState(false);
+  const animationValue = useSharedValue(-20);
 
-  return isOpen ? (
+  const animated = useAnimatedStyle(() => ({
+    bottom: withSpring(animationValue.value, { damping: 16 }),
+    opacity: interpolate(animationValue.value, [-20, -5], [0, 1]),
+  }));
+
+  useMemo(() => {
+    if (!isOpen) {
+      animationValue.value = withSpring(-20, { damping: 16 });
+
+      const time = setTimeout(() => {
+        setIsClosing(false);
+      }, 500);
+
+      return () => clearTimeout(time);
+    } else {
+      setIsClosing(true);
+      animationValue.value = withDelay(50, withSpring(-5, { damping: 16 }));
+    }
+  }, [isOpen]);
+
+  return isClosing ? (
     <>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.backgroundBottomSheet} />
       </TouchableWithoutFeedback>
-      <View style={styles.contentBottomSheet}>
+      <Animated.View style={[styles.contentBottomSheet, animated]}>
         <View style={styles.line} />
         {children}
-      </View>
+      </Animated.View>
     </>
   ) : null;
 }

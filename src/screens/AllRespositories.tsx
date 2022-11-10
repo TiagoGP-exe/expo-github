@@ -1,23 +1,34 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { FC, ReactNode, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { CardRepo, IRepoCard } from "../components/Card/CardRepo";
 import { useRepo } from "../hooks/useRepo";
+import { ScreenProp } from "../routes/NavigatorTypes";
 
 export interface IChildren {
   children?: ReactNode;
 }
 
-export function HomeScreen() {
+export function AllRespositories() {
   const { repos, setFavoriteById } = useRepo();
+
+  const navigation = useNavigation<ScreenProp<"DetailsRepository">>();
+
   const keyExtractor = useCallback(
     (_: IRepoCard, index: Number) => String(index),
     []
   );
+  const goToRepo = useCallback(
+    (data: IRepoCard) => {
+      navigation.navigate("DetailsRepository", data);
+    },
+    [navigation]
+  );
 
   const rowRenderer = useCallback(
     ({ item }: { item: IRepoCard }) => (
-      <CardRepo {...item} onPress={setFavoriteById} />
+      <CardRepo {...item} onPress={setFavoriteById} goToRepo={goToRepo} />
     ),
     []
   );

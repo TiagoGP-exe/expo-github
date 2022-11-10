@@ -1,27 +1,31 @@
-import React, { FC, useCallback, useMemo, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Touchable,
-  Dimensions,
-  FlatList,
-} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import React, { FC, useCallback } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { CardRepo, IRepoCard } from "../components/Card/CardRepo";
 import { useRepo } from "../hooks/useRepo";
-import { IChildren } from "./HomeScreen";
-
-const { height } = Dimensions.get("window");
+import { ScreenProp } from "../routes/NavigatorTypes";
+import { IChildren } from "./AllRespositories";
 
 function FavoritesRepositories() {
   const { favoriteRepos } = useRepo();
+
+  const navigation = useNavigation<ScreenProp<"DetailsRepository">>();
   const keyExtractor = useCallback(
     (_: IRepoCard, index: Number) => String(index),
     []
   );
 
+  const goToRepo = useCallback(
+    (data: IRepoCard) => {
+      navigation.navigate("DetailsRepository", data);
+    },
+    [navigation]
+  );
+
   const rowRenderer = useCallback(
-    ({ item }: { item: IRepoCard }) => <CardRepo {...item} disableButton />,
+    ({ item }: { item: IRepoCard }) => (
+      <CardRepo {...item} disableButton goToRepo={goToRepo} />
+    ),
     []
   );
 

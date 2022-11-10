@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
 interface LanguageUsageProps {
-  language: string;
+  language?: string;
   color?: string;
 }
 
@@ -12,7 +12,9 @@ export function LanguageUsage({
   return (
     <View style={styles.container}>
       <View style={[styles.circle, { backgroundColor: color }]} />
-      <Text style={styles.title}>{language}</Text>
+      <Text style={styles.title}>
+        {language ?? "Nenhuma descrição encontrada"}
+      </Text>
     </View>
   );
 }

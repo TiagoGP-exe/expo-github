@@ -17,6 +17,7 @@ interface IRepos {
   language?: string;
   stars: number;
   avatar: string;
+  url: string;
 }
 
 interface IRepoContext {
@@ -43,7 +44,7 @@ export const RepoProvider: FC<RepoProviderProps> = ({ children }) => {
 
     const actualRepos = repos?.find((repo) => repo.id === id);
 
-    if (!newFavoriteRepos && actualRepos) {
+    if (newFavoriteRepos === undefined && actualRepos) {
       const result = favoriteRepos?.length
         ? [...favoriteRepos, actualRepos]
         : [actualRepos];

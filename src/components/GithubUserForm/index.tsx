@@ -10,11 +10,9 @@ import {
   View,
 } from "react-native";
 import * as yup from "yup";
-import { BASE_URL } from "../../constants/env";
 import { useBottomSheet } from "../../hooks/useBottomSheet";
 import { useRepo } from "../../hooks/useRepo";
 import { getReposWithOwner } from "../../services/repoService";
-import { api } from "../../utils/api";
 import { formattedRepos } from "../../utils/formatData";
 import { Input } from "../Input";
 
@@ -60,7 +58,6 @@ export function GithubUserForm() {
 
       hideBottomSheet();
     } catch (error: any) {
-      console.log(error.response.data);
       setError("user", {
         type: "manual",
         message: "Usuário não encontrado",
@@ -120,7 +117,7 @@ export function GithubUserForm() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 180,
+    height: 200,
     justifyContent: "space-evenly",
   },
   buttonContainer: {

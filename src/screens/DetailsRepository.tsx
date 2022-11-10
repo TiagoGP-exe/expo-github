@@ -1,47 +1,61 @@
-import { Ionicons } from "@expo/vector-icons";
-import { View, StyleSheet, Text, Touchable } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Route, useRoute } from "@react-navigation/native";
+import { FC } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { ButtonsDetails } from "../components/ButtonsDetails";
+import { IRepoCard } from "../components/Card/CardRepo";
 import { LanguageUsage } from "../components/Card/LanguageUsage";
-import { useRepo } from "../hooks/useRepo";
 
-export function DetailsRepository() {
+export const DetailsRepository: FC = () => {
+  const {
+    params: { id, name, description, language, url },
+  } = useRoute<Route<"DetailsRepository", IRepoCard>>();
+
   const [firstText, secondText] = name.split("/");
-  const { favoriteRepos } = useRepo();
 
   return (
     <View style={styles.container}>
-      <>
-        <Text>
-          {firstText}/<Text style={styles.cardHeaderText}>{secondText}</Text>
+      <View style={styles.content}>
+        <Text style={styles.cardHeaderText}>
+          {firstText}/<Text style={styles.bold}>{secondText}</Text>
         </Text>
 
         <Text style={styles.description}>
           {description ?? "Nenhuma descrição encontrada"}
         </Text>
 
-        <LanguageUsage language="" />
-      </>
-      <ButtonsDetails id={0} url="" />
+        <LanguageUsage language={language} />
+      </View>
+
+      <View style={styles.content}>
+        <ButtonsDetails id={id} url={url} />
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F6F6F5",
-    alignItems: "center",
+    // alignItems: "center",
+    justifyContent: "space-between",
   },
   cardHeaderText: {
+    fontSize: 18,
+  },
+  content: {
+    backgroundColor: "#fff",
+    padding: 16,
+  },
+  bold: {
+    fontWeight: "bold",
+  },
+  cardHeaderTextBold: {
     fontWeight: "bold",
   },
   description: {
-    width: "100%",
-    color: "#9A9A9A",
-    fontSize: 12,
-  },
-  blue: {
-    color: "#0366d6",
+    fontSize: 16,
+    marginTop: 16,
+    marginBottom: 16,
   },
 });
