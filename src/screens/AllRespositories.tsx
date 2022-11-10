@@ -26,9 +26,13 @@ export function AllRespositories() {
     [navigation]
   );
 
+  const handleFavoriteById = async (id : number) => {
+     await setFavoriteById(id)
+  }
+
   const rowRenderer = useCallback(
     ({ item }: { item: IRepoCard }) => (
-      <CardRepo {...item} onPress={setFavoriteById} goToRepo={goToRepo} />
+      <CardRepo {...item} onPress={handleFavoriteById} goToRepo={goToRepo} />
     ),
     []
   );
