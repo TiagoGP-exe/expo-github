@@ -11,6 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "extra": {
+      "API_URL": "https://api.github.com/users"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -20,12 +23,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": ".src/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
       }
-    },
-    "web": {
-      "favicon": ".src/assets/favicon.png"
     }
   }
 }
