@@ -27,9 +27,13 @@ export function BottomSheetComponent({
     opacity: interpolate(animationValue.value, [-20, -5], [0, 1]),
   }));
 
+  const animatedBackground = useAnimatedStyle(() => ({
+    opacity: interpolate(animationValue.value, [-20, -5], [0, 0.5]),
+  }));
+
   useMemo(() => {
     if (!isOpen) {
-      animationValue.value = withSpring(-20, { damping: 16 });
+      animationValue.value = withSpring(-20);
 
       const time = setTimeout(() => {
         setIsClosing(false);
@@ -45,7 +49,9 @@ export function BottomSheetComponent({
   return isClosing ? (
     <>
       <TouchableWithoutFeedback onPress={onClose}>
-        <View style={styles.backgroundBottomSheet} />
+        <Animated.View
+          style={[styles.backgroundBottomSheet, animatedBackground]}
+        />
       </TouchableWithoutFeedback>
       <Animated.View style={[styles.contentBottomSheet, animated]}>
         <View style={styles.line} />
