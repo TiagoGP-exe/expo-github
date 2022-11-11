@@ -3,20 +3,22 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 interface StarButtonProps {
   onPress: () => void;
+  isFavorite: boolean;
 }
 
-export function StarButton({ onPress }: StarButtonProps) {
+export function StarButton({ onPress, isFavorite }: StarButtonProps) {
+
   return (
-    <TouchableOpacity onPress={onPress} style={styles.starButtonContainer}>
-      <Ionicons name="star" size={16} color="#FFD02C" />
-      <Text style={styles.textContent}>Favoritar</Text>
+    <TouchableOpacity onPress={onPress} style={[styles.starButtonContainer, isFavorite ? styles.buttonDesactive : styles.buttonActive]}>
+      {isFavorite ? <Ionicons name="star-outline" size={16} color="#000" /> : <Ionicons name="star" size={16} color="#FFD02C" />}
+
+      <Text style={[styles.textContent, { color: isFavorite ? "#000" : "#FFD02C" }]}>{isFavorite ? "Desfavoritar" : "Favoritar"} </Text>
     </TouchableOpacity>
   );
 }
 
 export const styles = StyleSheet.create({
   starButtonContainer: {
-    backgroundColor: "#FAF3DC",
     height: 36,
     flexDirection: "row",
     alignItems: "center",
@@ -25,10 +27,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
   },
+
   textContent: {
-    color: "#FFD02C",
     fontSize: 16,
     marginLeft: 8,
     fontWeight: "bold",
+  },
+  buttonActive: {
+    backgroundColor: "#FAF3DC",
+  },
+  buttonDesactive: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#000",
   },
 });

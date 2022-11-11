@@ -11,7 +11,9 @@ export interface IChildren {
 }
 
 export function AllRespositories() {
-  const { repos, setFavoriteById } = useRepo();
+  const {  repos } = useRepo();
+
+
 
   const navigation = useNavigation<ScreenProp<"DetailsRepository">>();
 
@@ -26,13 +28,10 @@ export function AllRespositories() {
     [navigation]
   );
 
-  const handleFavoriteById = async (id : number) => {
-     await setFavoriteById(id)
-  }
 
   const rowRenderer = useCallback(
     ({ item }: { item: IRepoCard }) => (
-      <CardRepo {...item} onPress={handleFavoriteById} goToRepo={goToRepo} />
+      <CardRepo {...item} goToRepo={goToRepo} />
     ),
     []
   );

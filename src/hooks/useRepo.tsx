@@ -3,6 +3,7 @@ import {
   createContext,
   FC,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -39,11 +40,12 @@ export const RepoProvider: FC<RepoProviderProps> = ({ children }) => {
   const [repos, setRepos] = useState<IRepos[] | null>(null);
   const [favoriteRepos, setFavoriteRepos] = useState<IRepos[] | null>(null);
 
-  const setFavoriteById = async (id: number) => {
+  const setFavoriteById =  useCallback(async (id: number) => {
     const newFavoriteRepos = favoriteRepos?.find((repo) => repo.id === id);
-
     const actualRepos = repos?.find((repo) => repo.id === id);
 
+    
+  
     if (newFavoriteRepos === undefined && actualRepos) {
       const result = favoriteRepos?.length
         ? [...favoriteRepos, actualRepos]
@@ -53,7 +55,7 @@ export const RepoProvider: FC<RepoProviderProps> = ({ children }) => {
 
       await AsyncStorage.setItem("favoriteRepos", JSON.stringify(result));
     }
-  };
+  }, [favoriteRepos, repos, setFavoriteRepos]);
 
   const removeFavoriteById = async (id: number) => {
     const newFavoriteRepos = favoriteRepos?.filter((repo) => repo.id !== id);

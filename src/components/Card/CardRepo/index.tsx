@@ -6,6 +6,7 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
+import { useRepo } from "../../../hooks/useRepo";
 import { LanguageUsage } from "../LanguageUsage";
 import { StarButton } from "../StarButton";
 import { StarCount } from "../StarCount";
@@ -22,7 +23,6 @@ export interface IRepoCard {
 }
 
 export interface CardRepoProps extends IRepoCard {
-  onPress?: (id: number) => void;
   goToRepo?: (data: IRepoCard) => void;
 }
 
@@ -36,17 +36,22 @@ export function CardRepo({
   avatar,
   language,
   url,
-  onPress,
   disableButton,
   goToRepo,
 }: CardRepoProps) {
   const [firstText, secondText] = name.split("/");
+  const { removeFavoriteById, setFavoriteById,favoriteRepos } = useRepo();
+  const isFavorite = !!favoriteRepos?.some((repo) => repo.id === id);
 
   const handlePress = async () => {
-    onPress && onPress(id);
+    if (isFavorite) {
+      removeFavoriteById(id)
+      return
+    }
+    setFavoriteById(id)
   };
 
-  const handleGoToRepo = async () => {
+  const handleGoToRepo = () => {
     goToRepo &&
       goToRepo({ id, name, description, stars, avatar, language, url });
   };
@@ -69,7 +74,7 @@ export function CardRepo({
         {description ?? "Nenhuma descrição encontrada"}
       </Text>
       <View style={styles.content}>
-        {!disableButton && <StarButton onPress={handlePress} />}
+        {!disableButton && <StarButton isFavorite={isFavorite} onPress={handlePress} />}
         <StarCount count={stars ?? 0} />
         <LanguageUsage language={language ?? "desconhecido"} />
       </View>
